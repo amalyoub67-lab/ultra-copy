@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>ULTRA COPY | Vente et Photocopieurs et Imprimantes au Maroc</title>
+    <meta name="description" content="Achetez votre photocopieur et imprimante au Maroc au meilleur prix garanti. Solutions d'impression professionnelles Konica Minolta, Sharp, Ricoh. Livraison express 24/48h.">
+    <meta name="keywords" content="photocopieur maroc, imprimante casablanca, bizhub, ultra copy, toner, cartouche, photocopieur pas cher, mon copieur">
+    <link rel="canonical" href="https://votre-domaine.ma/">
+
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="ULTRA COPY | Imprimantes & Photocopieurs au Maroc">
+    <meta property="og:description" content="Meilleur prix garanti sur tous nos copieurs et toners. Service client et livraison rapide dans tout le Maroc.">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?w=500">
+    <meta property="og:url" content="https://votre-domaine.ma/">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Store",
+      "name": "ULTRA COPY",
+      "description": "Vente de photocopieurs, imprimantes multifonctions et toners d'origine au Maroc.",
+      "url": "https://votre-domaine.ma/",
+      "telephone": "+212716455906",
+      "priceRange": "DH",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Casablanca",
+        "addressCountry": "MA"
+      }
+    }
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans antialiased pb-32">
+
+    <header class="bg-white sticky top-0 z-40 border-b border-gray-200 shadow-xs">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <span class="text-2xl font-black tracking-wider text-gray-900 cursor-pointer" onclick="filtrerCategorie('tous')">ULTRA<span class="text-blue-600">COPY</span></span>
+            
+            <div class="flex items-center space-x-2" id="zone-admin-boutons">
+                <button id="btn-acces-admin" onclick="verifierCodeAdmin()" class="text-xs bg-gray-100 hover:bg-gray-200 text-gray-600 px-3 py-1.5 rounded-lg transition font-medium cursor-pointer">
+                    <i class="fas fa-lock mr-1 text-blue-600"></i> Zone Administrateur (Admin)
+                </button>
+                <button id="btn-quitter-admin" onclick="quitterModeAdmin()" class="hidden text-xs bg-red-50 hover:bg-red-100 text-red-600 px-3 py-1.5 rounded-lg transition font-bold cursor-pointer">
+                    <i class="fas fa-sign-out-alt mr-1"></i> Quitter Admin / Retour
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-12">
+
+        <section id="admin-form-container" class="hidden bg-white rounded-2xl p-6 shadow-xl border border-gray-100 max-w-2xl mx-auto">
+            <div class="flex justify-between items-center mb-4">
+                <h3 id="form-title" class="text-lg font-bold text-gray-900"><i class="fas fa-plus-circle text-blue-600 mr-1"></i> Zone d'Ajout Matériel</h3>
+                <button onclick="fermerFormulaire()" class="text-gray-400 hover:text-gray-600 cursor-pointer"><i class="fas fa-times"></i></button>
+            </div>
+            <form id="product-form" onsubmit="sauvegarderProduit(event)" class="space-y-4">
+                <input type="hidden" id="p-id-edit">
+
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Type de Matériel</label>
+                        <select id="p-type" class="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-hidden focus:border-blue-500">
+                            <option value="imprimante">🖨️ Imprimante / Photocopieur</option>
+                            <option value="toner">🧪 Toner / Cartouche</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Nom du modèle</label>
+                        <input type="text" id="p-nom" required placeholder="Ex: Konica Minolta bizhub C368" class="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-hidden focus:border-blue-500">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Prix (DH)</label>
+                        <input type="number" id="p-prix" required placeholder="Ex: 14500" class="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-hidden focus:border-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Sous-Catégorie</label>
+                        <input type="text" id="p-cat" placeholder="Ex: MFP Couleur A3" class="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl text-sm outline-hidden focus:border-blue-500">
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Caractéristiques (Une par ligne)</label>
+                    <textarea id="p-carac" rows="6" placeholder="Marque photocopieur : Konica Minolta&#10;Référence : bizhub C368&#10;Format standard : A3" class="w-full p-2.5 bg-gray-50 border border-gray-200 rounded-xl text-xs outline-hidden focus:border-blue-500 font-mono"></textarea>
+                </div>
+                
+                <div class="bg-gray-50 p-4 rounded-xl border border-gray-100 space-y-3">
+                    <span class="block text-xs font-bold text-gray-700 uppercase tracking-wider"><i class="fas fa-folder-open text-blue-600 mr-1"></i> Modifier / Charger depuis vos dossiers</span>
+                    <p class="text-[10px] text-amber-600 font-medium"><i class="fas fa-exclamation-triangle"></i> Laissez vide lors d'une modification si vous ne souhaitez pas changer les photos actuelles.</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <div>
+                            <label class="block text-[10px] font-medium text-gray-400 mb-0.5">Photo 1 (Principale)</label>
+                            <input type="file" id="p-file1" accept="image/*" class="w-full text-xs bg-white border border-gray-200 rounded-lg p-1.5 file:mr-2 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-blue-50 file:text-blue-700">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-medium text-gray-400 mb-0.5">Photo 2</label>
+                            <input type="file" id="p-file2" accept="image/*" class="w-full text-xs bg-white border border-gray-200 rounded-lg p-1.5 file:mr-2 file:py-1 file:px-2">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-medium text-gray-400 mb-0.5">Photo 3</label>
+                            <input type="file" id="p-file3" accept="image/*" class="w-full text-xs bg-white border border-gray-200 rounded-lg p-1.5 file:mr-2 file:py-1 file:px-2">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-medium text-gray-400 mb-0.5">Photo 4</label>
+                            <input type="file" id="p-file4" accept="image/*" class="w-full text-xs bg-white border border-gray-200 rounded-lg p-1.5 file:mr-2 file:py-1 file:px-2">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-medium text-gray-400 mb-0.5">Photo 5</label>
+                            <input type="file" id="p-file5" accept="image/*" class="w-full text-xs bg-white border border-gray-200 rounded-lg p-1.5 file:mr-2 file:py-1 file:px-2">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-medium text-gray-400 mb-0.5">Photo 6</label>
+                            <input type="file" id="p-file6" accept="image/*" class="w-full text-xs bg-white border border-gray-200 rounded-lg p-1.5 file:mr-2 file:py-1 file:px-2">
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" id="submit-btn" class="w-full bg-blue-600 hover:bg-blue-700 text-white p-3 rounded-xl font-bold text-sm shadow-md transition cursor-pointer">Publier le produit sur le site</button>
+            </form>
+        </section>
+
+        <section class="bg-white rounded-3xl p-6 md:p-8 shadow-sm border border-gray-100 grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
+            <div class="space-y-6">
+                <span class="bg-blue-50 text-blue-600 text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-md">Présentation Officielle</span>
+                <h1 class="text-3xl md:text-4xl font-extrabold text-gray-900 tracking-tight">Découvrez la société ULTRA COPY</h1>
+                <p class="text-gray-500 leading-relaxed">Visionnez notre vidéo d'entreprise pour découvrir nos équipements de haute technologie, nos consommables certifiés d'origine et notre service logistique au Maroc.</p>
+            </div>
+            <div class="aspect-video w-full rounded-2xl overflow-hidden shadow-xs bg-gray-900 border border-gray-200">
+                <iframe class="w-full h-full" src="https://www.youtube.com/embed/dQw4w9WgXcQ" title="Vidéo ULTRA COPY" frameborder="0" allowfullscreen></iframe>
+            </div>
+        </section>
+
+        <section class="flex flex-wrap items-center justify-center gap-4 bg-white p-4 rounded-2xl border border-gray-200 shadow-xs">
+            <button id="btn-filtre-tous" onclick="filtrerCategorie('tous')" class="px-6 py-3 bg-blue-600 text-white font-bold text-sm rounded-xl transition shadow-xs cursor-pointer flex items-center space-x-2">
+                <i class="fas fa-border-all"></i> <span>Voir Tout</span>
+            </button>
+            <button id="btn-filtre-imprimante" onclick="filtrerCategorie('imprimante')" class="px-6 py-3 bg-gray-100 hover:bg-blue-50 text-gray-700 hover:text-blue-600 font-bold text-sm rounded-xl transition cursor-pointer flex items-center space-x-2">
+                <i class="fas fa-print"></i> <span>🖨️ Afficher les Imprimantes</span>
+            </button>
+            <button id="btn-filtre-toner" onclick="filtrerCategorie('toner')" class="px-6 py-3 bg-gray-100 hover:bg-emerald-50 text-gray-700 hover:text-emerald-600 font-bold text-sm rounded-xl transition cursor-pointer flex items-center space-x-2">
+                <i class="fas fa-box-open"></i> <span>🧪 Afficher les Toners</span>
+            </button>
+        </section>
+
+        <section id="section-imprimantes" class="space-y-6 transition-all duration-300">
+            <div class="border-l-4 border-blue-600 pl-4">
+                <h2 class="text-2xl font-black text-gray-900 uppercase tracking-wide">🖨️ NOS IMPRIMANTES & PHOTOCOPIEURS</h2>
+            </div>
+            <div id="container-imprimantes" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8"></div>
+        </section>
+
+        <section id="section-toners" class="space-y-6 transition-all duration-300">
+            <div class="border-l-4 border-emerald-600 pl-4">
+                <h2 class="text-2xl font-black text-gray-900 uppercase tracking-wide">🧪 NOS TONERS & CARTOUCHES</h2>
+            </div>
+            <div id="container-toners" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-8"></div>
+        </section>
+
+    </main>
+
+    <div id="barre-panier" class="hidden fixed bottom-6 left-1/2 -translate-x-1/2 w-11/12 max-w-2xl bg-gray-900 text-white rounded-2xl p-4 shadow-2xl z-50 flex items-center justify-between border border-gray-800">
+        <div class="flex items-center space-x-4">
+            <div class="bg-blue-600 px-3 py-2 rounded-xl text-center">
+                <i class="fas fa-shopping-cart text-base"></i>
+                <span id="panier-count" class="block text-xs font-bold">0</span>
+            </div>
+            <div>
+                <p class="text-xs text-gray-400 font-medium">Votre sélection actuelle</p>
+                <p class="text-xl font-black text-blue-400"><span id="panier-total">0.00</span> DH</p>
+            </div>
+        </div>
+        <div class="flex items-center space-x-2">
+            <button onclick="viderPanier()" class="bg-gray-800 hover:bg-red-600 text-gray-400 hover:text-white p-3 rounded-xl transition shadow-md cursor-pointer"><i class="fas fa-trash-alt"></i></button>
+            <button onclick="envoyerCommandeWhatsApp()" class="bg-emerald-500 hover:bg-emerald-600 text-white px-4 py-3 rounded-xl font-bold text-sm flex items-center space-x-2 shadow-lg transition cursor-pointer">
+                <i class="fab fa-whatsapp text-lg"></i><span>Commander</span>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let panier = {};
+        let isAdminActive = false;
+        
+        let produitsStockes = JSON.parse(localStorage.getItem('ultra_print_products')) || [
+            { id: 1, type: 'imprimante', nom: 'Konica Minolta bizhub C368', prix: 14500, cat: 'MFP Couleur A3', carac: 'Marque photocopieur : Konica Minolta\nRéférence : bizhub C368\nType : MFP\nFormat standard : A3 , A3+\nChromie : couleur', imgs: ['https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?w=500'] }
+        ];
+
+        function filtrerCategorie(type) {
+            let secImprimantes = document.getElementById('section-imprimantes');
+            let secToners = document.getElementById('section-toners');
+            let btnTous = document.getElementById('btn-filtre-tous');
+            let btnImp = document.getElementById('btn-filtre-imprimante');
+            let btnTon = document.getElementById('btn-filtre-toner');
+
+            [btnTous, btnImp, btnTon].forEach(btn => btn.className = "px-6 py-3 bg-gray-100 text-gray-700 font-bold text-sm rounded-xl transition cursor-pointer flex items-center space-x-2");
+
+            if (type === 'imprimante') {
+                secImprimantes.classList.remove('hidden'); secToners.classList.add('hidden');
+                btnImp.className = "px-6 py-3 bg-blue-600 text-white font-bold text-sm rounded-xl transition shadow-xs cursor-pointer flex items-center space-x-2";
+            } else if (type === 'toner') {
+                secImprimantes.classList.add('hidden'); secToners.classList.remove('hidden');
+                btnTon.className = "px-6 py-3 bg-emerald-600 text-white font-bold text-sm rounded-xl transition shadow-xs cursor-pointer flex items-center space-x-2";
+            } else {
+                secImprimantes.classList.remove('hidden'); secToners.classList.remove('hidden');
+                btnTous.className = "px-6 py-3 bg-blue-600 text-white font-bold text-sm rounded-xl transition shadow-xs cursor-pointer flex items-center space-x-2";
+            }
+        }
+
+        function verifierCodeAdmin() {
+            let codeSaisi = prompt("Veuillez saisir le code d'accès administrateur :");
+            if (codeSaisi === "0987") {
+                isAdminActive = true;
+                reinitialiserFormulaire();
+                
+                document.getElementById('btn-acces-admin').classList.add('hidden');
+                document.getElementById('btn-quitter-admin').classList.remove('hidden');
+                
+                document.getElementById('admin-form-container').classList.remove('hidden');
+                document.getElementById('admin-form-container').scrollIntoView({ behavior: 'smooth' });
+                afficherTousLesProduits();
+            } else if (codeSaisi !== null) { alert("❌ Code incorrect. Accès refusé."); }
+        }
+
+        function quitterModeAdmin() {
+            isAdminActive = false;
+            reinitialiserFormulaire();
+            fermerFormulaire();
+            
+            document.getElementById('btn-quitter-admin').classList.add('hidden');
+            document.getElementById('btn-acces-admin').classList.remove('hidden');
+            
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            afficherTousLesProduits();
+        }
+
+        function fermerFormulaire() { 
+            document.getElementById('admin-form-container').classList.add('hidden'); 
+        }
+
+        function reinitialiserFormulaire() {
+            document.getElementById('product-form').reset();
+            document.getElementById('p-id-edit').value = '';
+            document.getElementById('form-title').innerHTML = `<i class="fas fa-plus-circle text-blue-600 mr-1"></i> Zone d'Ajout Matériel`;
+            document.getElementById('submit-btn').innerText = "Publier le produit sur le site";
+            document.getElementById('p-file1').required = true;
+        }
+
+        function basculerDescription(id) {
+            let conteneur = document.getElementById(`desc-container-${id}`);
+            let icone = document.getElementById(`desc-icon-${id}`);
+            
+            if (conteneur.classList.contains('hidden')) {
+                conteneur.classList.remove('hidden');
+                icone.classList.add('rotate-180');
+            } else {
+                conteneur.classList.add('hidden');
+                icone.classList.remove('rotate-180');
+            }
+        }
+
+        function supprimerProduit(id, nom) {
+            if (confirm(`⚠️ Êtes-vous sûr de vouloir supprimer définitivement le produit :\n"${nom}" ?`)) {
+                produitsStockes = produitsStockes.filter(p => p.id !== id);
+                localStorage.setItem('ultra_print_products', JSON.stringify(produitsStockes));
+                
+                if(document.getElementById('p-id-edit').value == id) {
+                    reinitialiserFormulaire();
+                }
+                if (panier[id]) {
+                    delete panier[id];
+                    calculerPanier();
+                }
+                afficherTousLesProduits();
+            }
+        }
+
+        function afficherTousLesProduits() {
+            document.getElementById('container-imprimantes').innerHTML = '';
+            document.getElementById('container-toners').innerHTML = '';
+
+            produitsStockes.forEach(p => {
+                let listeImgs = p.imgs.filter(img => img && img.trim() !== '');
+                let mainImg = listeImgs[0] || 'https://via.placeholder.com/400x300';
+                
+                let lignes = p.carac.split('\n').filter(l => l.trim() !== '');
+                let caracHtml = lignes.map(ligne => {
+                    if(ligne.includes(':')) {
+                        let indexDeuxPoints = ligne.indexOf(':');
+                        let cle = ligne.substring(0, indexDeuxPoints).trim();
+                        let valeur = ligne.substring(indexDeuxPoints + 1).trim();
+                        return `
+                            <div class="flex justify-between border-b border-gray-100 py-2 text-xs">
+                                <span class="text-gray-400 font-medium">${cle}</span>
+                                <span class="text-gray-800 font-semibold text-right">${valeur}</span>
+                            </div>`;
+                    }
+                    return `<div class="text-xs text-gray-600 py-1 flex items-start"><span class="text-blue-500 mr-2">•</span><span>${ligne}</span></div>`;
+                }).join('');
+
+                let miniaturesHtml = listeImgs.map(img => `
+                    <img src="${img}" onclick="document.getElementById('img-view-${p.id}').src='${img}'" class="w-10 h-10 object-contain bg-white p-1 rounded-lg border border-gray-200 cursor-pointer hover:border-blue-500 transition">
+                `).join('');
+
+                let zoneBoutonsAdminHtml = '';
+                if(isAdminActive) {
+                    zoneBoutonsAdminHtml = `
+                        <div class="absolute top-4 right-4 flex items-center space-x-2 z-10">
+                            <button onclick="preparerModification(${p.id})" class="bg-white hover:bg-amber-500 text-gray-700 hover:text-white w-9 h-9 rounded-full flex items-center justify-center shadow-md border border-gray-100 transition active:scale-95 cursor-pointer" title="Modifier">
+                                <i class="fas fa-pencil-alt text-xs"></i>
+                            </button>
+                            <button onclick="supprimerProduit(${p.id}, '${p.nom.replace(/'/g, "\\'")}')" class="bg-white hover:bg-red-600 text-red-500 hover:text-white w-9 h-9 rounded-full flex items-center justify-center shadow-md border border-gray-100 transition active:scale-95 cursor-pointer" title="Supprimer définitivement">
+                                <i class="fas fa-trash-alt text-xs"></i>
+                            </button>
+                        </div>
+                    `;
+                }
+
+                let cardHtml = `
+                    <div class="bg-white rounded-2xl border border-gray-200 shadow-xs flex flex-col overflow-hidden relative group hover:shadow-md transition-all duration-200">
+                        ${zoneBoutonsAdminHtml}
+                        
+                        <div class="p-6 bg-white flex flex-col justify-center items-center border-b border-gray-100">
+                            <img id="img-view-${p.id}" src="${mainImg}" class="w-full h-64 object-contain mx-auto transition-transform duration-300 group-hover:scale-102">
+                            <div class="flex flex-wrap justify-center gap-1.5 mt-4">${miniaturesHtml}</div>
+                        </div>
+                        
+                        <div class="p-6 flex-1 flex flex-col justify-between space-y-4">
+                            <div>
+                                <span class="text-[10px] font-bold tracking-widest uppercase ${p.type === 'imprimante' ? 'text-blue-600 bg-blue-50' : 'text-emerald-600 bg-emerald-50'} px-2.5 py-1 rounded-md">${p.cat}</span>
+                                <h3 class="text-xl font-extrabold text-gray-900 mt-2 tracking-tight">${p.nom}</h3>
+                                
+                                <button onclick="basculerDescription(${p.id})" class="w-full mt-4 flex items-center justify-between p-3 bg-gray-50 hover:bg-gray-100 rounded-xl text-xs font-bold text-gray-700 transition cursor-pointer">
+                                    <span><i class="fas fa-info-circle mr-1 text-blue-500"></i> Afficher la fiche technique</span>
+                                    <i id="desc-icon-${p.id}" class="fas fa-chevron-down transition-transform duration-200 text-gray-400"></i>
+                                </button>
+
+                                <div id="desc-container-${p.id}" class="hidden mt-3 space-y-0.5 bg-white border border-gray-100 p-3 rounded-xl max-h-60 overflow-y-auto">
+                                    ${caracHtml}
+                                </div>
+                            </div>
+                            
+                            <div class="pt-4 border-t border-gray-100 flex items-center justify-between">
+                                <div>
+                                    <p class="text-[9px] text-gray-400 uppercase font-bold tracking-widest">Tarif Maroc</p>
+                                    <span class="text-2xl font-black text-gray-900">${parseFloat(p.prix).toLocaleString()} <span class="text-sm font-bold ${p.type === 'imprimante' ? 'text-blue-600' : 'text-emerald-600'}">DH</span></span>
+                                </div>
+                                <button onclick="ajouterAuPanier(${p.id}, '${p.nom.replace(/'/g, "\\'")}', ${p.prix})" class="${p.type === 'imprimante' ? 'bg-blue-600 hover:bg-blue-700' : 'bg-emerald-600 hover:bg-emerald-700'} text-white px-5 py-3 rounded-xl font-bold text-xs flex items-center space-x-2 transition shadow-xs active:scale-95 cursor-pointer">
+                                    <i class="fas fa-shopping-bag text-xs"></i><span>Sélectionner</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                if (p.type === 'imprimante') { document.getElementById('container-imprimantes').innerHTML += cardHtml; }
+                else { document.getElementById('container-toners').innerHTML += cardHtml; }
+            });
+        }
+
+        function preparerModification(id) {
+            let produit = produitsStockes.find(p => p.id === id);
+            if (!produit) return;
+
+            document.getElementById('p-id-edit').value = produit.id;
+            document.getElementById('p-type').value = produit.type;
+            document.getElementById('p-nom').value = produit.nom;
+            document.getElementById('p-prix').value = produit.prix;
+            document.getElementById('p-cat').value = produit.cat;
+            document.getElementById('p-carac').value = produit.carac;
+
+            document.getElementById('p-file1').required = false;
+            document.getElementById('form-title').innerHTML = `<i class="fas fa-edit text-amber-500 mr-1"></i> Modifier le produit : ${produit.nom}`;
+            document.getElementById('submit-btn').innerText = "Mettre à jour le produit";
+
+            document.getElementById('admin-form-container').classList.remove('hidden');
+            document.getElementById('admin-form-container').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function lireFichierEnBase64(file) {
+            return new Promise((resolve) => {
+                if (!file) resolve(null);
+                let reader = new FileReader();
+                reader.onload = (e) => resolve(e.target.result);
+                reader.readAsDataURL(file);
+            });
+        }
+
+        async function sauvegarderProduit(e) {
+            e.preventDefault();
+            let idModification = document.getElementById('p-id-edit').value;
+
+            let imgPromesses = [
+                lireFichierEnBase64(document.getElementById('p-file1').files[0]),
+                lireFichierEnBase64(document.getElementById('p-file2').files[0]),
+                lireFichierEnBase64(document.getElementById('p-file3').files[0]),
+                lireFichierEnBase64(document.getElementById('p-file4').files[0]),
+                lireFichierEnBase64(document.getElementById('p-file5').files[0]),
+                lireFichierEnBase64(document.getElementById('p-file6').files[0])
+            ];
+            let nouvellesImages = await Promise.all(imgPromesses);
+            nouvellesImages = nouvellesImages.filter(img => img !== null);
+
+            if (idModification) {
+                let index = produitsStockes.findIndex(p => p.id == idModification);
+                if (index !== -1) {
+                    let imagesFinales = nouvellesImages.length > 0 ? nouvellesImages : produitsStockes[index].imgs;
+                    produitsStockes[index].type = document.getElementById('p-type').value;
+                    produitsStockes[index].nom = document.getElementById('p-nom').value;
+                    produitsStockes[index].prix = parseFloat(document.getElementById('p-prix').value);
+                    produitsStockes[index].cat = document.getElementById('p-cat').value;
+                    produitsStockes[index].carac = document.getElementById('p-carac').value;
+                    produitsStockes[index].imgs = imagesFinales;
+                }
+            } else {
+                let nouveau = {
+                    id: Date.now(),
+                    type: document.getElementById('p-type').value,
+                    nom: document.getElementById('p-nom').value,
+                    prix: parseFloat(document.getElementById('p-prix').value),
+                    cat: document.getElementById('p-cat').value || (document.getElementById('p-type').value === 'imprimante' ? 'Imprimante' : 'Consommable'),
+                    carac: document.getElementById('p-carac').value,
+                    imgs: nouvellesImages
+                };
+                produitsStockes.push(nouveau);
+            }
+
+            localStorage.setItem('ultra_print_products', JSON.stringify(produitsStockes));
+            reinitialiserFormulaire();
+            fermerFormulaire();
+            afficherTousLesProduits();
+        }
+
+        function ajouterAuPanier(id, nom, prix) {
+            if (panier[id]) { panier[id].qty += 1; } else { panier[id] = { nom: nom, prix: prix, qty: 1 }; }
+            calculerPanier();
+        }
+
+        function viderPanier() { panier = {}; calculerPanier(); }
+
+        function calculerPanier() {
+            let totalQty = 0, totalArgent = 0;
+            for (let id in panier) { totalQty += panier[id].qty; totalArgent += panier[id].prix * panier[id].qty; }
+            document.getElementById('panier-count').innerText = totalQty;
+            document.getElementById('panier-total').innerText = totalArgent.toFixed(2);
+            let barre = document.getElementById('barre-panier');
+            if (totalQty > 0) barre.classList.remove('hidden'); else barre.classList.add('hidden');
+        }
+
+        function envoyerCommandeWhatsApp() {
+            let numeroTel = "212716455906";
+            let messageText = "Bonjour ULTRA COPY, je souhaite commander le matériel suivant :\n\n";
+            let totalFinal = 0;
+            for (let id in panier) {
+                let st = panier[id].prix * panier[id].qty;
+                messageText += `• ${panier[id].nom} (Qté: ${panier[id].qty}) : ${st.toFixed(2)} DH\n`;
+                totalFinal += st;
+            }
+            messageText += `\n*Montant Global : ${totalFinal.toFixed(2)} DH*`;
+            window.open(`https://wa.me/${numeroTel}?text=${encodeURIComponent(messageText)}`, '_blank');
+        }
+
+        window.onload = afficherTousLesProduits;
+    </script>
+</body>
+</html>
